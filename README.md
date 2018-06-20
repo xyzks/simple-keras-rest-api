@@ -14,6 +14,12 @@ I assume you already have Keras (and a supported backend) installed on your syst
 $ pip install flask gevent requests
 ```
 
+or
+
+```sh
+$ pip install pyramid gevent requests
+```
+
 Next, clone the repo:
 
 ```sh
