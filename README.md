@@ -87,3 +87,17 @@ $ python simple_request.py
 4. Brittany_spaniel: 0.0013
 5. bluetick: 0.0011
 ```
+
+### Container
+
+#### Building
+
+```sh
+[sudo] docker build -t simple-keras-rest-api .
+```
+
+#### Running
+
+```sh
+[sudo] docker run -it --rm -p 6543:6543 --name api simple-keras-rest-api
+```
