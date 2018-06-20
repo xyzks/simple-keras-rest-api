@@ -11,13 +11,13 @@ For an _even more advanced version_ that includes deploying a model to productio
 I assume you already have Keras (and a supported backend) installed on your system. From there you need to install [Flask](http://flask.pocoo.org/) and [requests](http://docs.python-requests.org/en/master/):
 
 ```sh
-$ pip install flask gevent requests
+$ pip install tensorflow keras flask gevent requests
 ```
 
 or
 
 ```sh
-$ pip install pyramid gevent requests
+$ pip install tensorflow keras pyramid gevent requests
 ```
 
 Next, clone the repo:
