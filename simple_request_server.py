@@ -5,11 +5,13 @@
 import tensorflow as tf
 import requests
 
+from remote import DEFAULT_URL
+
 import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--rest_api_url', default='http://localhost:6543/predict', type=str,
+parser.add_argument('--rest_api_url', default=DEFAULT_URL, type=str,
                               		  help='Address to predict')
 parser.add_argument('--image_path', default='pelican.jpg', type=str,
 									help='Predictible image')
