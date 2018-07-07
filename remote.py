@@ -1,6 +1,7 @@
-import os
 
-if 'URL' in os.environ:
-	DEFAULT_URL = os.environ['URL']
-elif not 'URL' in os.environ:
-	DEFAULT_URL='http://localhost:6543/predict'
+def fn_default_url(sub):
+	if 'URL' in sub.environ:
+		DEFAULT_URL = '%s/predict' % sub.environ['URL']
+	if not 'URL' in sub.environ:
+		DEFAULT_URL='http://localhost:6543/predict'
+	return DEFAULT_URL

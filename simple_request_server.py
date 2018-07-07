@@ -2,16 +2,18 @@
 # python simple_request_server.py
 
 # import the necessary packages
+import os
+
 import tensorflow as tf
 import requests
 
-from remote import DEFAULT_URL
+from remote import fn_default_url
 
 import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--rest_api_url', default=DEFAULT_URL, type=str,
+parser.add_argument('--rest_api_url', default=fn_default_url(os), type=str,
                               		  help='Address to predict')
 parser.add_argument('--image_path', default='pelican.jpg', type=str,
 									help='Predictible image')
