@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
@@ -9,13 +11,23 @@ from PIL import Image
 import numpy as np
 import io
 
+import argparse
 
-def load_model():
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--host', default='0.0.0.0', type=str,
+                              help='Binding host protocol')
+parser.add_argument('--port', default=6543, type=int,
+                              help='Server port listening')
+parser.add_argument('--label', default='imagenet', type=str,
+							 help='Weights label for a pre-fething content')
+
+def load_model(weights_label="imagenet"):
 	# load the pre-trained Keras model (here we are using a model
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
-	model = ResNet50(weights="imagenet")
+	model = ResNet50(weights=weights_label)
 
 def prepare_image(image, target):
 	# if the image mode is not RGB, convert it
@@ -63,11 +75,20 @@ def predict(request):
 	# return the data dictionary as a JSON response
 	return data
 
+def main(argv):
+	args = parser.parse_args(argv[1:])
+
+	with Configurator() as config:
+		config.add_route('predict', '/predict')
+		config.add_view(predict, route_name='predict', renderer='json')
+		app = config.make_wsgi_app()
+
+	load_model(args.label)
+
+	server = make_server(args.host, args.port, app)
+	server.serve_forever()
+
 if __name__ == '__main__':
-    with Configurator() as config:
-        config.add_route('predict', '/predict')
-        config.add_view(predict, route_name='predict', renderer='json')
-        app = config.make_wsgi_app()
-    load_model()
-    server = make_server('0.0.0.0', 6543, app)
-    server.serve_forever()
+	tf.logging.set_verbosity(tf.logging.INFO)
+	tf.app.run(main)
+    
