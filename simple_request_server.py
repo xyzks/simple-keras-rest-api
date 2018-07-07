@@ -34,7 +34,7 @@ def main(argv):
 
 	# otherwise, the request failed
 	else:
-		print("Request failed")
+		print("Request failed: %s -X POST -F image=@dog %s" % ('curl', args.rest_api_url))
 
 if __name__ == '__main__':
 	tf.logging.set_verbosity(tf.logging.INFO)
