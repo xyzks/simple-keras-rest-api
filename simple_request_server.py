@@ -2,27 +2,38 @@
 # python simple_request_server.py
 
 # import the necessary packages
+import tensorflow as tf
 import requests
 
-# initialize the Keras REST API endpoint URL along with the input
-# image path
-KERAS_REST_API_URL = "http://localhost:6543/predict"
-IMAGE_PATH = "pelican.jpg"
+import argparse
 
-# load the input image and construct the payload for the request
-image = open(IMAGE_PATH, "rb").read()
-payload = {"image": image}
+parser = argparse.ArgumentParser()
 
-# submit the request
-r = requests.post(KERAS_REST_API_URL, files=payload).json()
+parser.add_argument('--rest_api_url', default='http://localhost:6543/predict', type=str,
+                              		  help='Address to predict')
+parser.add_argument('--image_path', default='pelican.jpg', type=str,
+									help='Predictible image')
 
-# ensure the request was sucessful
-if r["success"]:
-	# loop over the predictions and display them
-	for (i, result) in enumerate(r["predictions"]):
-		print("{}. {}: {:.4f}".format(i + 1, result["label"],
-			result["probability"]))
+def main(argv):
+	args = parser.parse_args(argv[1:])
+	# load the input image and construct the payload for the request
+	image = open(args.image_path, "rb").read()
+	payload = {"image": image}
 
-# otherwise, the request failed
-else:
-	print("Request failed")
+	# submit the request
+	r = requests.post(args.rest_api_url, files=payload).json()
+
+	# ensure the request was sucessful
+	if r["success"]:
+		# loop over the predictions and display them
+		for (i, result) in enumerate(r["predictions"]):
+			print("{}. {}: {:.4f}".format(i + 1, result["label"],
+				result["probability"]))
+
+	# otherwise, the request failed
+	else:
+		print("Request failed")
+
+if __name__ == '__main__':
+	tf.logging.set_verbosity(tf.logging.INFO)
+	tf.app.run(main)
